@@ -1,0 +1,11 @@
+{
+  "name": "saint-beloved",
+  "version": "1.0.0",
+  "description": "Saint Beloved — Personal Essay Website",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
