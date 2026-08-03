@@ -1,0 +1,19 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "essays"
+    label: "Essays"
+    folder: "_essays"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false, hint: "A short sentence or two that previews the essay." }
+      - { label: "Cover Image", name: "cover", widget: "image", hint: "Upload a cover image for this essay." }
+      - { label: "Body", name: "body", widget: "markdown" }
