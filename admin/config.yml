@@ -1,4 +1,4 @@
-backend:
+ backend:
   name: git-gateway
   branch: main
 
@@ -15,5 +15,5 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Excerpt", name: "excerpt", widget: "text", required: false, hint: "A short sentence or two that previews the essay." }
-      - { label: "Cover Image", name: "cover", widget: "image", hint: "Upload a cover image for this essay." }
+      - { label: "Cover Image", name: "cover", widget: "image", required: false, hint: "Upload a cover image for this essay. Optional." }
       - { label: "Body", name: "body", widget: "markdown" }
