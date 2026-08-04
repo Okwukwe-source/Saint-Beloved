@@ -1,7 +1,8 @@
-// subscribe.js — Saint Beloved
+ // subscribe.js — Saint Beloved
+// Handles email subscription via MailerLite API.
 
-const BREVO_API_KEY = 'YOUR_BREVO_API_KEY_HERE';
-const BREVO_LIST_ID = 0;
+const MAILERLITE_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYTdmYWY3ZjVkN2E4MTU5Nzg4ODUxM2U1ZjU2OTY2ZWM2YzdmMmM3MzhmYjIzZWRlZmEzN2NiN2JkYTU4MGM5NTM4YTY3ZmI2MTg2MThhZDQiLCJpYXQiOjE3ODU4MDQ0MjkuNzk4MTAzLCJuYmYiOjE3ODU4MDQ0MjkuNzk4MTA1LCJleHAiOjQ5NDE0NzgwMjkuNzkwNjg2LCJzdWIiOiIyNTcyMjg3Iiwic2NvcGVzIjpbXX0.IKekrrYlrtfNK0QjVgoLnM5sHXVknnprd3qlPBZeiTsk5I3sWrmCQUH0lCH5i-0Q1gD_FyQKOFL_0AXimvhJyYlQCyw9Hkn0udOtUk-ylYTGcNbfFClsB4hAjbgqkc3cE2ERkeTcAgEYWdJVDg5k4Ogknrwtpgo7T6Wvhp8LMaOumBPRSDt5yyWBGkagRMTigSm4j16tsfzZ2-weFT7lTx5zeAVuiP_rDiEESe2O2iWxkH6E-T3npCaV9ZYaIJSTLFPJzkwOumGRj7v10aJxsFIPuCAkLvk_jjOVupWUG3hyKO_oHSlLzn0bbPcVRmMu48GjjdQpW49qR6pdi7Uqc3CjA9oPvPhdCAAVq2wHgP2YhHF77fZofR7ojvtDgkJhkYfmeH9y1xberr7MTxaBc7fjFGNSO5_SSRwjx41Y_HM97SebncddK2JhNI2HDMtwJogjZtLi0R_1ns4PnIkenanCVkqcx0nrKvntMGdoJ-yHobIRi3tE0oJGA6eUvhjRMeJe8DayMrEYJ8-KUEt_YP3upQvlG2xzPmdYCmP3vw52NXJUJO7ccena_9L9-U-1tVXAoddMQ2NfktMVnRx605oRXnIsdFLIVEcmaZpHb19YUMRPrwZu2Q_ID-2oTSJLFyYb9u6rRQm-qU3cjQWogtOJturuZp97xJVQjxeKyCM';
+const MAILERLITE_GROUP_ID = '194830162056971369';
 
 async function handleSubscribe(formId, noteId) {
   const form = document.getElementById(formId);
@@ -23,31 +24,27 @@ async function handleSubscribe(formId, noteId) {
     note.className = 'subscribe-note';
 
     try {
-      const response = await fetch('https://api.brevo.com/v3/contacts', {
+      const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': BREVO_API_KEY,
+          'Authorization': `Bearer ${MAILERLITE_API_KEY}`,
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           email: email,
-          listIds: [BREVO_LIST_ID],
-          updateEnabled: true,
+          groups: [MAILERLITE_GROUP_ID],
         }),
       });
 
-      if (response.ok || response.status === 204) {
-        note.textContent = 'You\'re in. Essays will find you.';
+      const data = await response.json();
+
+      if (response.ok || response.status === 201 || response.status === 200) {
+        note.textContent = "You're in. Essays will find you.";
         note.className = 'subscribe-note success';
         emailInput.value = '';
       } else {
-        const data = await response.json();
-        if (data.code === 'duplicate_parameter') {
-          note.textContent = 'You\'re already subscribed.';
-          note.className = 'subscribe-note success';
-        } else {
-          throw new Error(data.message || 'Something went wrong.');
-        }
+        throw new Error(data.message || 'Something went wrong.');
       }
     } catch (err) {
       console.error('Subscribe error:', err);
