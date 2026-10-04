@@ -1,5 +1,5 @@
 ---
-title: Oneness I
+title: "Oneness "
 date: 2026-10-04T10:59:00.000+01:00
 excerpt: Enchantment, vision, dream
 cover: /images/uploads/paradiso_canto_31_-148200393-.jpg
